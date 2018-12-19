@@ -2,15 +2,12 @@ var express = require('express');
 var router = express.Router();
 var models = require('../models')
 var bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 /* GET users listing. */
 router.get('/',  function(req, res, next) {
   res.send('respond with a resource');
 });
-
-router.get('/login', (req, res) => {
-  res.render('auth/login')
-})
 
 router.post('/login', (req, res) => {
   const { username, password } = req.body
@@ -22,17 +19,18 @@ router.post('/login', (req, res) => {
     if(user != null) {
       const checkPassword =  bcrypt.compareSync(password, user.password)
       if(checkPassword === true){
-        req.session.user = {
-          username: username
-        }
-        res.redirect('/siswas')
+        const token = jwt.sign({ user: user}, 'secret_key')
+        res.status(200).json({message: "Success Login", data: {token: token}})
+        // req.session.user = {
+        //   username: username
+        // }
+        // res.redirect('/siswas')
       }else {
         console.log("tisak kosog tapi salah")
-        res.redirect('/users/login')
+        res.status(403).json({message: "Invalid Login"})
       }
     }else {
-      console.log("kosong")
-      res.redirect('/users/login')
+      res.status(403).json({message: "Invalid Login"})
     }
   })
 })

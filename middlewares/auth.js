@@ -1,8 +1,12 @@
+const jwt = require('jsonwebtoken')
+
 const checkAuth = (req, res, next) => {
-    if (req.session.user === null || req.session.user === undefined) {
-        res.redirect('/users/login')
+    const decode = jwt.verify(req.headers.token, 'secret_key')
+    if (decode) {
+        req.user = decode.user;
+        next();
     } else {
-        next()
+        res.status(403).json({message: "Invalid Token"})
     }
 }
 
