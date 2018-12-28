@@ -21,12 +21,7 @@ router.post('/login', (req, res) => {
       if(checkPassword === true){
         const token = jwt.sign({ user: user}, 'secret_key')
         res.status(200).json({message: "Success Login", data: {token: token}})
-        // req.session.user = {
-        //   username: username
-        // }
-        // res.redirect('/siswas')
       }else {
-        console.log("tisak kosog tapi salah")
         res.status(403).json({message: "Invalid Login"})
       }
     }else {

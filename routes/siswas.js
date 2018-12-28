@@ -5,7 +5,6 @@ const { checkAuth } = require('../middlewares/auth')
 /* GET users listing. */
 
 router.get('/', checkAuth, function(req, res, next) {
-  // const user = req.session.user
   models.Siswa.findAll().then(siswas => {
     res.status(200).json({message: "Read Data Siswa", data: siswas})
   }).catch(err => {
@@ -22,7 +21,6 @@ router.delete('/:id', checkAuth, (req, res) => {
   }).then(siswa => {
     res.status(200).json({message: "Delete data siswa dengan ID " + siswaId})
   }).catch(err => {
-    console.log(err)
     res.status(500).json({message: "Terjadi Kesalahan"})
   })
 })
@@ -32,7 +30,7 @@ router.post('/', checkAuth, (req, res) =>{
   models.Siswa.create({nama, alamat, kelas }).then(siswa => {
     res.status(201).json({message: "Berhasil Simpan data Siswa", data: siswa})
   }).catch(err => {
-    console.log(err)
+    res.status(500).json({message: "Invalid Token"})
   })
 })
 
