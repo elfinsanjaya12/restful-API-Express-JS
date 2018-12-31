@@ -19,7 +19,7 @@ router.delete('/:id', checkAuth, (req, res) => {
   models.Siswa.findOne({where: {id: siswaId}}).then(siswa => {
     return siswa.destroy()
   }).then(siswa => {
-    res.status(200).json({message: "Delete data siswa dengan ID " + siswaId})
+    res.status(200).json({message: "Delete data siswa", data: siswa})
   }).catch(err => {
     res.status(500).json({message: "Terjadi Kesalahan"})
   })
@@ -30,7 +30,7 @@ router.post('/', checkAuth, (req, res) =>{
   models.Siswa.create({nama, alamat, kelas }).then(siswa => {
     res.status(201).json({message: "Berhasil Simpan data Siswa", data: siswa})
   }).catch(err => {
-    res.status(500).json({message: "Invalid Token"})
+    res.status(403).json({message: "Invalid Token"})
   })
 })
 
@@ -43,7 +43,7 @@ router.put('/:id', checkAuth, (req, res) => {
       alamat,
       kelas
     }).then(updateSiswa => {
-      res.status(201).json({message: "Update siswa ", data:updateSiswa})
+      res.status(201).json({message: "Update Siswa", data:updateSiswa})
     }).catch(err => {
       console.log(err)
       res.status(500).json({message: "Terjadi Kesalahan"})
